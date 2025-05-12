@@ -82,7 +82,6 @@ This allows us to implement two distinct detection strategies:
 - Fully functioning Python program (`main.py`) for text-based language detection
 - Supporting scripts for data processing, feature analysis, and prediction
 - Sample inputs and test cases with expected outputs
-- *(Optional)* Batch analysis output showing language trends in literature
 - Clear, concise documentation and instructions for running the program
 
 ---
