@@ -1,6 +1,8 @@
 def detect_script(text):
-    for char in text: #go through all the characters
+    for char in text:
         code = ord(char)
-        if #UNICODE HERE# <= code <= #UNICODE HERE#:
+        if 0x4E00 <= code <= 0x9FFF:
             return "Mandarin"
-    return "Latin" #Example of 2 languages
+        elif 0x3040 <= code <= 0x309F or 0x30A0 <= code <= 0x30FF:
+            return "Japanese"
+    return "Latin"
