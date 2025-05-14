@@ -1,6 +1,9 @@
+import os
 import sys
 from predict_language import predict_language
 from detector import detect_language as heuristic_guess
+from build_language_profiles import build_all_profiles
+from FinalDataCollectionCode import process_all_languages, gutenberg_urls
 
 def get_user_input():
     """
@@ -39,7 +42,19 @@ def display_results(language, confidence, top_matches, fallback):
 
 def main():
     print("Welcome to LinguaLens 🌍")
+
+    # Step 1: Download/clean corpora if needed
+    if not os.path.exists('clean_corpora') or not os.listdir('clean_corpora'):
+        print("📥 Downloading and cleaning corpora...")
+        process_all_languages(gutenberg_urls)
+        print("✅ Clean corpora ready.\n")
+        
     user_text = get_user_input()
+
+    # Build profiles automatically
+    print("📦 Building language profiles...")
+    build_all_profiles()
+    print("✅ Profiles ready.\n")
 
     predicted_lang, confidence, top_matches = predict_language(user_text)
     fallback_guess = heuristic_guess(user_text)
