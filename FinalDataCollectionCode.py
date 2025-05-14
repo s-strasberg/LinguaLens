@@ -48,13 +48,13 @@ def process_all_languages(gutenberg_urls, output_dir = 'clean_corpora'):
   download_dir = 'corpora' # Separate directory
 
   for lang, url in gutenberg_urls.items():
-    filename = f"{lang}.txt"
-    download_text(url, filename, output_dir)
-    path = os.path.join(download_dir, filename)
-    raw_text = load_corpus(path)
-    cleaned = clean_text(raw_text)
-    save_cleaned_text(lang, cleaned, output_dir)
-    print(f"Processed: {lang}")
+        filename = f"{lang}.txt"
+        download_text(url, filename, download_dir)  # download to raw folder
+        path = os.path.join(download_dir, filename)  # load from raw
+        raw_text = load_corpus(path)
+        cleaned = clean_text(raw_text)
+        save_cleaned_text(lang, cleaned, output_dir)
+        print(f"Processed: {lang}")
 
 
 gutenberg_urls = {
