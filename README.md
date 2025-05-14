@@ -6,7 +6,9 @@
 ---
 
 ## Overview  
-**LinguaLens** is a Python-based tool that automatically detects the language of a given text input. Users can either paste a text string or upload a `.txt` file, and the program will analyze the input using a combination of Unicode script detection and statistical language profiling to determine the most likely language. The tool is designed to work across multiple languages, including both Latin-script and non-Latin-script languages, and will provide a confidence score along with a brief explanation of the features that contributed to the prediction.
+**LinguaLens** is a Python-based tool that automatically detects the language of a given text input. Users can either paste a text string or upload a `.txt` file, and the program will analyze the input using statistical character frequency profiling to determine the most likely language. The tool supports five Latin-script languages and outputs a best guess, a confidence score, and a fallback heuristic guess.
+
+All setup (data collection, preprocessing, and profile generation) runs automatically when executing `main.py`.
 
 ---
 
@@ -17,50 +19,51 @@
 
 ---
 
-## Confirmed Languages  
-LinguaLens will support detection for at least **seven languages**:  
-- **Latin-script:** English, Spanish, French, German, Italian  
-- **Non-Latin-script:** Japanese, Mandarin Chinese  
+## Supported Languages  
+LinguaLens supports detection for five **Latin-script languages**:
+- English
+- Spanish
+- French
+- German
+- Italian
 
-This allows us to implement two distinct detection strategies:
-1. **Unicode-based script detection** for languages with unique character sets (Japanese, Mandarin).
-2. **Feature-based frequency comparison** for Latin-alphabet languages using letter frequencies, digraphs/trigraphs, and common word presence.
+Detection is based on:
+- Normalized character frequency comparison using cosine similarity
+- A simple keyword-based fallback detector for verification
 
 ---
 
 ## Project Structure  
 
-| File Name              | Purpose                                                                 | Owner               |
-|------------------------|-------------------------------------------------------------------------|---------------------|
-| `data_collector.py`    | Gathers training corpora from Project Gutenberg or other sources        | **Liliana**         |
-| `text_cleaner.py`      | Preprocesses and tokenizes user input (lowercase, punctuation removal)  | **Liliana**         |
-| `unicode_detector.py`  | Identifies language family using Unicode script ranges                  | **Sawyer**          |
-| `language_profiles.py` | Builds reference profiles for each language using frequency analysis     | **Sawyer**          |
-| `feature_extractor.py` | Extracts text features from input (letter/digraph frequencies)          | **Gideon**          |
-| `predict_language.py`  | Compares input to language profiles and returns best guess + confidence | **Gideon**          |
-| `main.py`              | Manages CLI interaction and integrates all modules                      | **All**             |
-| `README.md`            | Project documentation and usage guide                                   | **All**             |
+| File Name                   | Purpose                                                                 | Owner               |
+|-----------------------------|-------------------------------------------------------------------------|---------------------|
+| `FinalDataCollectionCode.py`| Downloads and cleans training corpora from Project Gutenberg             | **Liliana**         |
+| `feature_extractor.py`      | Extracts text features from user input (letter frequencies)              | **Gideon**          |
+| `predict_language.py`       | Compares input to language profiles and returns best guess + confidence | **Gideon**          |
+| `build_language_profiles.py`| Builds `.json` profiles for each language from cleaned corpora           | **Gideon**          |
+| `detector.py`               | Uses keyword heuristics to generate a fallback guess                     | **Sawyer**          |
+| `main.py`                   | CLI entry point; integrates all modules and manages full pipeline        | **All**             |
+| `README.md`                 | Project documentation and usage guide                                   | **All**             |
 
 ---
 
 ## Division of Labor
 
 ### Liliana Cunha
-- Collect sample corpora and manage training dataset creation (`data_collector.py`)
-- Implement input cleaning and preprocessing pipeline (`text_cleaner.py`)
+- Collect sample corpora and manage training dataset creation (`FinalDataCollectionCode.py`)
+- Implement input cleaning and preprocessing pipeline
 - Support `main.py` integration and documentation
 
 ### Sawyer Strasberg
-- Design and implement Unicode-based script detection (`unicode_detector.py`)
-- Generate reference language profiles from training corpora (`language_profiles.py`)
-- Assist with sample validation and mixed-language handling
+- Design and implement fallback keyword-based language detector (`detector.py`)
+- Assist with profile verification and edge case handling
 
 ### Gideon Buddenhagen
 - Develop feature extraction and similarity scoring logic (`feature_extractor.py`, `predict_language.py`)
-- Lead integration testing and CLI output formatting (`main.py`)
-- Coordinate optional batch analysis (stretch goal)
+- Build profile generation tools (`build_language_profiles.py`)
+- Lead integration testing and CLI development (`main.py`)
 
-> All members will contribute to final documentation, code testing, and feature refinement.
+> All members contributed to final documentation, debugging, and polish.
 
 ---
 
@@ -69,10 +72,10 @@ This allows us to implement two distinct detection strategies:
 | Date        | Task                                                             |
 |-------------|------------------------------------------------------------------|
 | May 5–6     | Finalize language list; gather corpora; set up GitHub branches   |
-| May 7–8     | Build training profiles; write input cleaner; Unicode detector   |
+| May 7–8     | Build training profiles; write input cleaner; develop fallback   |
 | May 9–10    | Implement feature extraction; draft prediction function          |
 | May 11      | Test integration; run sample inputs through full pipeline        |
-| May 12–13   | Polish outputs, finalize confidence score logic, debug edge cases|
+| May 12–13   | Polish outputs, finalize confidence scoring, debug edge cases    |
 | May 14      | Final documentation and submission                               |
 
 ---
@@ -80,11 +83,12 @@ This allows us to implement two distinct detection strategies:
 ## Deliverables
 
 - Fully functioning Python program (`main.py`) for text-based language detection
-- Supporting scripts for data processing, feature analysis, and prediction
+- Automatically generated profiles from real corpora
 - Sample inputs and test cases with expected outputs
-- Clear, concise documentation and instructions for running the program
+- Clear documentation and usage instructions
 
 ---
+
 
 ## Collaboration Workflow
 
@@ -96,3 +100,6 @@ This allows us to implement two distinct detection strategies:
 - Merges happen through pull requests to the shared `main` branch  
 - Group sync meetings every 2–3 days or as needed  
 - All major components tested before merge
+
+
+
