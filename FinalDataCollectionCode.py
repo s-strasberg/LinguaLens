@@ -42,7 +42,7 @@ def save_cleaned_text(language, cleaned_text, output_dir = 'clean_corpora'):
   with open(out_path, 'w', encoding = 'utf-8') as f:
     f.write(cleaned_text)
 
-def process_all_languages(gutenberg_urls, output_dir = 'corpora'):
+def process_all_languages(gutenberg_urls, output_dir = 'clean_corpora'):
   # Download, clean, and save corpora from URLs
 
   download_dir = 'corpora' # Separate directory
