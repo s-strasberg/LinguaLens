@@ -1,5 +1,5 @@
 from collections import Counter
-from text_cleaner import clean_text
+from FinalDataCollectionCode import clean_text
 
 def extract_letter_frequencies(text):
     """
